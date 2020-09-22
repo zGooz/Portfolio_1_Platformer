@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+
 public class GameStartOrEnd : MonoBehaviour
 {
     [SerializeField] GameObject _buttonRuner;

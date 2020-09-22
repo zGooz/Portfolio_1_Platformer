@@ -1,31 +1,32 @@
 ﻿
 using UnityEngine;
 
+
 public class GameProcess : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
-    [SerializeField] private GameObject _menuGameStarter;
+    [SerializeField] private GameObject _menuGameStarterOrEnder;
     [SerializeField] private GameObject _menuGameResumer;
     [SerializeField] private GameObject _meniGameEnderOrRestarter;
 
-    public GameObject GameStarter => _menuGameStarter;
+    public GameObject GameStarter => _menuGameStarterOrEnder;
     public GameObject GameResumer => _menuGameResumer;
     public GameObject GameEnderOrRestarter => _meniGameEnderOrRestarter;
 
     private GameStartOrEnd _gameStarterComponent;
 
-    private const int GAME = 0;
-    private const int MENU = 1;
-    private const int PAUSE = 2;
-    private const int WINNER = 3;
-    private const int LOSE = 4;
+    public const int GAME = 0;
+    public const int MENU = 1;
+    public const int PAUSE = 2;
+    public const int WINNER = 3;
+    public const int LOSE = 4;
 
-    private int GameState = MENU;
+    public int GameState = MENU;
 
     private void Awake()
     {
-        _menuGameStarter = Instantiate(_menuGameStarter, _canvas.transform);
-        _gameStarterComponent = _menuGameStarter.GetComponent<GameStartOrEnd>();
+        _menuGameStarterOrEnder = Instantiate(_menuGameStarterOrEnder, _canvas.transform);
+        _gameStarterComponent = _menuGameStarterOrEnder.GetComponent<GameStartOrEnd>();
     }
 
     private void OnEnable()
@@ -43,7 +44,7 @@ public class GameProcess : MonoBehaviour
     private void OnGameRun()
     {
         GameState = GAME;
-        Destroy(_menuGameStarter);
+        Destroy(_menuGameStarterOrEnder);
     }
 
     private void OnGameDone()
