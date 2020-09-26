@@ -1,19 +1,28 @@
 ﻿
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GameProcess : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
-    [SerializeField] private GameObject _menuGameStarterOrEnder;
-    [SerializeField] private GameObject _menuGameResumer;
-    [SerializeField] private GameObject _meniGameEnderOrRestarter;
+    [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _menuGameStarterOrEnderPrefab;
+    [SerializeField] private GameObject _menuGameResumerPrefab;
+    [SerializeField] private GameObject _meniGameEnderOrRestarterPrefab;
+
+    private GameObject _menuGameStarterOrEnder;
+    private GameObject _menuGameResumer;
+    private GameObject _meniGameEnderOrRestarter;
 
     public GameObject GameStarter => _menuGameStarterOrEnder;
     public GameObject GameResumer => _menuGameResumer;
     public GameObject GameEnderOrRestarter => _meniGameEnderOrRestarter;
 
     private GameStartOrEnd _gameStarterComponent;
+    private GameRestartOrEnd _gameEnderComponent;
+    private GameResume _gameResumerComponent;
+    private CollectingCoins _coinCollectingComponent;
 
     public const int GAME = 0;
     public const int MENU = 1;
@@ -25,26 +34,80 @@ public class GameProcess : MonoBehaviour
 
     private void Awake()
     {
-        _menuGameStarterOrEnder = Instantiate(_menuGameStarterOrEnder, _canvas.transform);
+        _menuGameStarterOrEnder = Instantiate(_menuGameStarterOrEnderPrefab, _canvas.transform);
         _gameStarterComponent = _menuGameStarterOrEnder.GetComponent<GameStartOrEnd>();
+        _coinCollectingComponent = _player.GetComponent<CollectingCoins>();
     }
 
     private void OnEnable()
     {
         _gameStarterComponent.GameRun += OnGameRun;
         _gameStarterComponent.GameDone += OnGameDone;
+        _coinCollectingComponent.Collecting += OnWinnder;
     }
 
     private void OnDisable()
     {
-        _gameStarterComponent.GameRun -= OnGameRun;
-        _gameStarterComponent.GameDone -= OnGameDone;
+        _coinCollectingComponent.Collecting -= OnWinnder;
+
+        if (_gameEnderComponent is GameRestartOrEnd) 
+        {
+            _gameEnderComponent.GameRestart -= OnGameRestart;
+            _gameEnderComponent.GameDone -= OnGameDone;
+        }
+
+        if (_gameResumerComponent is GameResume)
+        {
+            _gameResumerComponent.ResumeGame -= OnGameResume;
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameState == GAME)
+            {
+                GameState = PAUSE;
+                
+                _menuGameResumer = Instantiate(_menuGameResumerPrefab, _canvas.transform);
+                _gameResumerComponent = _menuGameResumer.GetComponent<GameResume>();
+                _gameResumerComponent.ResumeGame += OnGameResume;
+            }
+        }
+    }
+
+    private void OnGameResume()
+    {
+        GameState = GAME;
+        Destroy(_menuGameResumer);
+    }
+
+    private void OnWinnder()
+    {
+        _meniGameEnderOrRestarter = Instantiate(_meniGameEnderOrRestarterPrefab, _canvas.transform);
+        _gameEnderComponent = _meniGameEnderOrRestarter.GetComponent<GameRestartOrEnd>();
+
+        _gameEnderComponent.GameRestart += OnGameRestart;
+        _gameEnderComponent.GameDone += OnGameDone;
     }
 
     private void OnGameRun()
     {
         GameState = GAME;
+
+        _gameStarterComponent.GameRun -= OnGameRun;
+        _gameStarterComponent.GameDone -= OnGameDone;
+
         Destroy(_menuGameStarterOrEnder);
+    }
+
+    private void OnGameRestart()
+    {
+        string scene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+
+        OnGameRun();
     }
 
     private void OnGameDone()
