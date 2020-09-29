@@ -3,23 +3,26 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 
 public class Walk : MonoBehaviour
 {
-    [SerializeField] GameObject _player;
-
     private GameProcess _managerData;
     private Rigidbody2D _body;
-    private Player _component;
+    private SpriteRenderer _renderer;
+    private Player _player;
 
     private float _speed;
+    private bool _oldFlip;
 
     private void Start()
     {
-        _component = _player.GetComponent<Player>();
-        _managerData = _component.ManagerStateData;
-        _speed = _component.Speed;
         _body = GetComponent<Rigidbody2D>();
+        _renderer = GetComponent<SpriteRenderer>();
+        _player = GetComponent<Player>();
+
+        _managerData = _player.ManagerStateData;
+        _speed = _player.Speed;
     }
 
     private void Update()
@@ -28,10 +31,20 @@ public class Walk : MonoBehaviour
         {
             float axis = Input.GetAxisRaw("Horizontal");
 
-            if (_component.PlayerState != Player.JUMP)
+            if (Input.GetButtonUp("Horizontal"))
             {
-                _component.PlayerState = (axis == 0) ? Player.IDLE : Player.WALK;
+                _oldFlip = _renderer.flipX;
             }
+
+            if (_player.State != Player.JUMP)
+            {
+                _player.State = (axis == 0) ? Player.IDLE : Player.WALK;
+            }
+
+            if (axis == 0)
+                _renderer.flipX = _oldFlip;
+            else 
+                _renderer.flipX = (axis < 0) ? true : false;
 
             _body.AddForce(new Vector2(axis, 0) * _speed * Time.deltaTime, ForceMode2D.Impulse);
         }

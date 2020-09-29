@@ -7,32 +7,28 @@ using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
-    [SerializeField] GameObject _player;
-
     private GameProcess _managerData;
     private Rigidbody2D _body;
     private BoxCollider2D _collider;
-    private Player _component;
+    private Player _player;
 
     private float _force;
 
     private void Start()
     {
-        _component = _player.GetComponent<Player>();
-        _managerData = _component.ManagerStateData;
-        _force = _component.JumpForce;
         _body = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
+        _player = GetComponent<Player>();
+
+        _managerData = _player.ManagerStateData;
+        _force = _player.JumpForce;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_component.PlayerState == Player.JUMP) 
-        { 
-            if (collision.gameObject.TryGetComponent(out Platform platform))
-            {
-                _component.PlayerState = Player.IDLE;
-            }
+        if (collision.gameObject.TryGetComponent(out Platform platform))
+        {
+            _player.State = Player.IDLE;
         }
     }
 
@@ -40,11 +36,11 @@ public class Jump : MonoBehaviour
     {
         if (_managerData.GameState == GameProcess.GAME)
         {
-            if (_component.PlayerState != Player.JUMP)
+            if (_player.State != Player.JUMP)
             {
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    _component.PlayerState = Player.JUMP;
+                    _player.State = Player.JUMP;
                     _body.AddForce(new Vector2(0, 1) * _force * Time.deltaTime, ForceMode2D.Impulse);
                 }
             }

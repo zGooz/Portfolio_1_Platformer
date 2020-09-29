@@ -7,6 +7,7 @@ public class GameProcess : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _deadArea;
     [SerializeField] private GameObject _menuGameStarterOrEnderPrefab;
     [SerializeField] private GameObject _menuGameResumerPrefab;
     [SerializeField] private GameObject _meniGameEnderOrRestarterPrefab;
@@ -22,7 +23,9 @@ public class GameProcess : MonoBehaviour
     private GameStartOrEnd _gameStarterComponent;
     private GameRestartOrEnd _gameEnderComponent;
     private GameResume _gameResumerComponent;
+
     private CollectingCoins _coinCollectingComponent;
+    private DeadArea _areaComponent;
 
     public const int GAME = 0;
     public const int MENU = 1;
@@ -37,6 +40,7 @@ public class GameProcess : MonoBehaviour
         _menuGameStarterOrEnder = Instantiate(_menuGameStarterOrEnderPrefab, _canvas.transform);
         _gameStarterComponent = _menuGameStarterOrEnder.GetComponent<GameStartOrEnd>();
         _coinCollectingComponent = _player.GetComponent<CollectingCoins>();
+        _areaComponent = _deadArea.GetComponent<DeadArea>();
     }
 
     private void OnEnable()
@@ -44,11 +48,13 @@ public class GameProcess : MonoBehaviour
         _gameStarterComponent.GameRun += OnGameRun;
         _gameStarterComponent.GameDone += OnGameDone;
         _coinCollectingComponent.Collecting += OnWinnder;
+        _areaComponent.Collide += OnLoose;
     }
 
     private void OnDisable()
     {
         _coinCollectingComponent.Collecting -= OnWinnder;
+        _areaComponent.Collide -= OnLoose;
 
         if (_gameEnderComponent is GameRestartOrEnd) 
         {
@@ -85,6 +91,8 @@ public class GameProcess : MonoBehaviour
 
     private void OnWinnder()
     {
+        GameState = WINNER;
+
         _meniGameEnderOrRestarter = Instantiate(_meniGameEnderOrRestarterPrefab, _canvas.transform);
         _gameEnderComponent = _meniGameEnderOrRestarter.GetComponent<GameRestartOrEnd>();
 
@@ -108,6 +116,12 @@ public class GameProcess : MonoBehaviour
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
 
         OnGameRun();
+    }
+
+    private void OnLoose()
+    {
+        OnWinnder();
+        GameState = LOSE;
     }
 
     private void OnGameDone()

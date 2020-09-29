@@ -67,7 +67,9 @@
     <Compile Include="Assets\Code\ButtonsActions\GameRestartOrEnd.cs" />
     <Compile Include="Assets\Code\ButtonsActions\GameResume.cs" />
     <Compile Include="Assets\Code\ButtonsActions\GameStartOrEnd.cs" />
+    <Compile Include="Assets\Code\Environment\Camera.cs" />
     <Compile Include="Assets\Code\Environment\Coin.cs" />
+    <Compile Include="Assets\Code\Environment\DeadArea.cs" />
     <Compile Include="Assets\Code\Environment\Platform.cs" />
     <Compile Include="Assets\Code\Player\CollectingCoins.cs" />
     <Compile Include="Assets\Code\Player\Jump.cs" />
