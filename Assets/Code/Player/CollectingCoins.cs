@@ -3,8 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+[RequireComponent(typeof(AudioSource))]
+
 public class CollectingCoins : MonoBehaviour
 {
+    [SerializeField] private AudioSource _sound;
+
     private int _coinAmount;
 
     public event UnityAction Collecting;
@@ -21,6 +25,8 @@ public class CollectingCoins : MonoBehaviour
         {
             _coinAmount -= 1;
             Destroy(collision.gameObject);
+
+            _sound.Play();
 
             if (_coinAmount == 0) 
             { 

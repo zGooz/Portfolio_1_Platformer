@@ -3,14 +3,24 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+[RequireComponent(typeof(AudioSource))]
+
 public class GameProcess : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _deadArea;
+
     [SerializeField] private GameObject _menuGameStarterOrEnderPrefab;
     [SerializeField] private GameObject _menuGameResumerPrefab;
     [SerializeField] private GameObject _meniGameEnderOrRestarterPrefab;
+
+    [SerializeField] private AudioClip _clipRun;
+    [SerializeField] private AudioClip _clipLoose;
+    [SerializeField] private AudioClip _clipWinner;
+
+    [SerializeField] private AudioSource _environmentSound;
+    [SerializeField] private AudioSource _backgroundMusic;
 
     private GameObject _menuGameStarterOrEnder;
     private GameObject _menuGameResumer;
@@ -35,12 +45,25 @@ public class GameProcess : MonoBehaviour
 
     public int GameState = MENU;
 
+    private void ChangeAndRunSound(AudioSource source, AudioClip clip)
+    {
+        source.clip = clip;
+        source.Play();
+    }
+
+    private void createMenuBox<T>(ref GameObject box, ref GameObject prefab, ref T component)
+    {
+        box = Instantiate(prefab, _canvas.transform);
+        component = box.GetComponent<T>();
+    }
+
     private void Awake()
     {
-        _menuGameStarterOrEnder = Instantiate(_menuGameStarterOrEnderPrefab, _canvas.transform);
-        _gameStarterComponent = _menuGameStarterOrEnder.GetComponent<GameStartOrEnd>();
+        createMenuBox(ref _menuGameStarterOrEnder, ref _menuGameStarterOrEnderPrefab, ref _gameStarterComponent);
+
         _coinCollectingComponent = _player.GetComponent<CollectingCoins>();
         _areaComponent = _deadArea.GetComponent<DeadArea>();
+        _environmentSound = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -75,9 +98,9 @@ public class GameProcess : MonoBehaviour
             if (GameState == GAME)
             {
                 GameState = PAUSE;
-                
-                _menuGameResumer = Instantiate(_menuGameResumerPrefab, _canvas.transform);
-                _gameResumerComponent = _menuGameResumer.GetComponent<GameResume>();
+
+                createMenuBox(ref _menuGameResumer, ref _menuGameResumerPrefab, ref _gameResumerComponent);
+
                 _gameResumerComponent.ResumeGame += OnGameResume;
             }
         }
@@ -93,11 +116,12 @@ public class GameProcess : MonoBehaviour
     {
         GameState = WINNER;
 
-        _meniGameEnderOrRestarter = Instantiate(_meniGameEnderOrRestarterPrefab, _canvas.transform);
-        _gameEnderComponent = _meniGameEnderOrRestarter.GetComponent<GameRestartOrEnd>();
+        createMenuBox(ref _meniGameEnderOrRestarter, ref _meniGameEnderOrRestarterPrefab, ref _gameEnderComponent);
 
         _gameEnderComponent.GameRestart += OnGameRestart;
         _gameEnderComponent.GameDone += OnGameDone;
+
+        ChangeAndRunSound(_environmentSound, _clipWinner);
     }
 
     private void OnGameRun()
@@ -108,6 +132,8 @@ public class GameProcess : MonoBehaviour
         _gameStarterComponent.GameDone -= OnGameDone;
 
         Destroy(_menuGameStarterOrEnder);
+
+        ChangeAndRunSound(_environmentSound, _clipRun);
     }
 
     private void OnGameRestart()
@@ -122,10 +148,13 @@ public class GameProcess : MonoBehaviour
     {
         OnWinnder();
         GameState = LOSE;
+
+        ChangeAndRunSound(_environmentSound, _clipLoose);
     }
 
     private void OnGameDone()
     {
+        Debug.Log("Application.Quit();");
         Application.Quit();
     }
 }

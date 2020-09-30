@@ -8,12 +8,18 @@ public class Player : MonoBehaviour
 {
     [SerializeField] GameObject _gameManager;
 
+    private CollectingCoins _coinCollectingComponent;
+
     private GameProcess _managerGameProcess;
     private Animator _animator;
 
+    private const float JUMP_FORCE_MAX = 550.0f;
+    private const float JUMP_FORCE_MIN = 400.0f;
+    private const float SPEED = 5.0f;
+
     public GameProcess ManagerStateData => _managerGameProcess;
-    public float Speed { get; } = 6f;
-    public float JumpForce { get; } = 600f;
+    public float Speed { private set; get; } = SPEED;
+    public float JumpForce { private set; get; } = JUMP_FORCE_MAX;
 
     public const int IDLE = 0;
     public const int WALK = 1;
@@ -21,14 +27,31 @@ public class Player : MonoBehaviour
 
     public int State { get; set; } = IDLE;
 
+    private void OnEnable()
+    {
+        _coinCollectingComponent.Collecting += OnCoinNotExists;
+    }
+
+    private void OnDisable()
+    {
+        _coinCollectingComponent.Collecting -= OnCoinNotExists;
+    }
+
+    private void OnCoinNotExists()
+    {
+        State = IDLE;
+    }
+
     private void Awake()
     {
         _managerGameProcess = _gameManager.GetComponent<GameProcess>();
         _animator = GetComponent<Animator>();
+        _coinCollectingComponent = GetComponent<CollectingCoins>();
     }
 
     private void Update()
     {
         _animator.SetInteger("State", State);
+        JumpForce = (State == WALK) ? JUMP_FORCE_MIN : JUMP_FORCE_MAX;
     }
 }
