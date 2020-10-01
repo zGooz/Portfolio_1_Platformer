@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] GameObject _gameManager;
+    [SerializeField] private GameObject _gameManager;
+    [SerializeField] private GameObject _dust;
 
     private CollectingCoins _coinCollectingComponent;
-
     private GameProcess _managerGameProcess;
     private Animator _animator;
 
@@ -20,6 +20,9 @@ public class Player : MonoBehaviour
     public GameProcess ManagerStateData => _managerGameProcess;
     public float Speed { private set; get; } = SPEED;
     public float JumpForce { private set; get; } = JUMP_FORCE_MAX;
+
+    public GameObject GetDustPrefab => _dust;
+    public float DustLiveTime { get; } = 0.5f;
 
     public const int IDLE = 0;
     public const int WALK = 1;

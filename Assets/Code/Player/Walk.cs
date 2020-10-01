@@ -50,6 +50,11 @@ public class Walk : MonoBehaviour
                         if (!_sound.isPlaying)
                         {
                             _sound.Play();
+
+                            Vector3 position = this.transform.position;
+                            position.Set(position.x - 0.6f, position.y, position.z);
+
+                            Destroy(Instantiate(_player.GetDustPrefab, position, Quaternion.identity), _player.DustLiveTime);
                         }
                     }
                 }
@@ -61,7 +66,7 @@ public class Walk : MonoBehaviour
             }
             else
             {
-                _renderer.flipX = (axis < 0) ? true : false;
+                _renderer.flipX = axis < 0;
             }
 
             _body.AddForce(new Vector2(axis, 0) * _speed * Time.deltaTime, ForceMode2D.Impulse);

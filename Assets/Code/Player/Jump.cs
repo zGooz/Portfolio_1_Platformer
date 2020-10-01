@@ -29,7 +29,13 @@ public class Jump : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out Platform platform))
         {
             _player.State = Player.IDLE;
+
             _sound.Play();
+
+            Vector3 position = this.transform.position;
+            position.Set(position.x - 0.6f, position.y, position.z);
+
+            Destroy(Instantiate(_player.GetDustPrefab, position, Quaternion.identity), _player.DustLiveTime);
         }
     }
 
