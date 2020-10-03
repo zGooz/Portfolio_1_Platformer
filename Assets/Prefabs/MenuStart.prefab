@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ed430e1923f544290408e2270109cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buttonRuner: {fileID: 5182759037520059091}
-  _buttonClosed: {fileID: 5182759038892467390}
+  buttonGameStart: {fileID: 5182759037520059091}
+  buttonGameExit: {fileID: 5182759038892467390}
 --- !u!1 &5182759037520059091
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 5182759037520059093}
   - component: {fileID: 1331503749447689936}
   m_Layer: 5
-  m_Name: Run
+  m_Name: Play
   m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

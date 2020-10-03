@@ -75,7 +75,7 @@
     <Compile Include="Assets\Code\Player\Jump.cs" />
     <Compile Include="Assets\Code\Player\Player.cs" />
     <Compile Include="Assets\Code\Player\Walk.cs" />
-    <Compile Include="Assets\Code\main manager\GameProcess.cs" />
+    <Compile Include="Assets\Code\main manager\Game.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

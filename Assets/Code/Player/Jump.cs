@@ -8,51 +8,98 @@ using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
-    [SerializeField] private AudioSource _sound;
+    [SerializeField] private AudioSource fallingSound;
 
-    private GameProcess _managerData;
-    private Rigidbody2D _body;
-    private BoxCollider2D _collider;
-    private Player _player;
+    private Game main;
+    private Rigidbody2D body;
+    private Player player;
 
     private void Start()
     {
-        _body = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<BoxCollider2D>();
-        _player = GetComponent<Player>();
-
-        _managerData = _player.ManagerStateData;
+        body = GetComponent<Rigidbody2D>();
+        player = GetComponent<Player>();
+        main = player.Main;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Platform platform))
+        if (IsPlatform())
         {
-            _player.State = Player.IDLE;
+            ToLand();
+        }
 
-            _sound.Play();
+        void ToLand()
+        {
+            player.State = Player.IDLE;
+            fallingSound.Play();
+            CreateHorstOfDust();
+        }
 
-            Vector3 position = this.transform.position;
-            position.Set(position.x - 0.6f, position.y, position.z);
+        bool IsPlatform()
+        {
+            return collision.gameObject.TryGetComponent(out Platform platform);
+        }
 
-            Destroy(Instantiate(_player.GetDustPrefab, position, Quaternion.identity), _player.DustLiveTime);
+        void CreateHorstOfDust()
+        {
+            Vector3 placeForCreation = GetDustPosition();
+            GameObject dust = Instantiate(player.DustPrefab, placeForCreation, Quaternion.identity);
+
+            Destroy(dust, player.DustLiveTime);
+        }
+
+        Vector3 GetDustPosition()
+        {
+            Vector3 placeForCreation = this.transform.position;
+
+            // For some reason, the dust is not exactly in the center, I had to shift it to the left.
+            float x = placeForCreation.x - 0.6f;
+            float y = placeForCreation.y;
+            float z = placeForCreation.z;
+
+            placeForCreation.Set(x, y, z);
+
+            return placeForCreation;
         }
     }
 
     private void Update()
     {
-        if (_managerData.GameState == GameProcess.GAME)
+        if (StateIsOutOfPlay())
         {
-            if (_player.State != Player.JUMP)
-            {
-                if (Input.GetKeyUp(KeyCode.Space))
-                {
-                    float _force = _player.JumpForce;
+            return;
+        }
 
-                    _player.State = Player.JUMP;
-                    _body.AddForce(new Vector2(0, 1) * _force * Time.deltaTime, ForceMode2D.Impulse);
-                }
+        if (! IsAboveGround())
+        {
+            if (Bounce())
+            {
+                ToJump();
             }
         }
+    }
+
+    private void ToJump()
+    {
+        float scaling = player.JumpForceScale * Time.deltaTime;
+        Vector2 force = new Vector2(0, 1) * scaling;
+
+        player.State = Player.JUMP;
+        body.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    private bool Bounce()
+    {
+        return Input.GetKeyUp(KeyCode.Space);
+    }
+
+    private bool IsAboveGround()
+    {
+        return player.State == Player.JUMP;
+    }
+
+    private bool StateIsOutOfPlay()
+    {
+        return main.State != Game.GAME;
     }
 }

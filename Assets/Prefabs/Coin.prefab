@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ee3b8ccd9472c14b93ba50abffaad31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _particleSystem: {fileID: 6193041928428661012, guid: bcdfe0452aa2e8f4d857c7f2f8f2887d,
+  starScatteringEffect: {fileID: 6193041928428661012, guid: bcdfe0452aa2e8f4d857c7f2f8f2887d,
     type: 3}
 --- !u!212 &8788870890140308034
 SpriteRenderer:

@@ -4,26 +4,30 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    [SerializeField] private GameObject _particleSystem;
+    [SerializeField] private GameObject starScatteringEffect;
 
-    private float _liveTime = 2.0f;
-    private GameObject _instance;
+    private float lifetime = 2.0f;
+    private GameObject emmiter;
 
     private void OnDestroy()
     {
-        Vector3 position = this.transform.position;
-        position.Set(position.x, position.y, -2);
+        Vector3 placeToCreation = this.transform.position;
 
-        _instance = Instantiate(_particleSystem, position, Quaternion.identity);
+        emmiter = Instantiate(starScatteringEffect, placeToCreation, Quaternion.identity);
 
-        Destroy(_instance, _liveTime);
+        Destroy(emmiter, lifetime);
     }
 
     private void OnApplicationQuit()
     {
-        if (_instance != null)
+        if (IsEmmiterExists())
         {
-            Destroy(_instance);
+            Destroy(emmiter);
+        }
+
+        bool IsEmmiterExists()
+        {
+            return emmiter != null;
         }
 
         Destroy(this);

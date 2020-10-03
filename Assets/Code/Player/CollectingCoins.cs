@@ -7,35 +7,50 @@ using UnityEngine.Events;
 
 public class CollectingCoins : MonoBehaviour
 {
-    [SerializeField] private AudioSource _sound;
+    [SerializeField] private AudioSource ringingCoins;
 
-    private int _coinAmount;
+    private int coinsAmount;
 
     public event UnityAction Collecting;
 
     private void Awake()
     {
-        var array = GameObject.FindGameObjectsWithTag("Coins");
-        _coinAmount = array.Length;
+        var allCoins = GameObject.FindGameObjectsWithTag("Coins");
+        coinsAmount = allCoins.Length;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Coin coin))
+        if (IsCoin())
         {
-            _coinAmount -= 1;
-            Destroy(collision.gameObject);
+            PickUpCoin(collision);
+        }
 
-            _sound.Play();
-
-            if (_coinAmount == 0) 
-            { 
-                OnCCollecting(); 
-            }
+        bool IsCoin()
+        {
+            return collision.gameObject.TryGetComponent(out Coin coin);
         }
     }
 
-    public void OnCCollecting()
+    private void PickUpCoin(Collision2D collision)
+    {
+        coinsAmount -= 1;
+        Destroy(collision.gameObject);
+
+        if (CoinNotExists())
+        {
+            OnCollecting();
+        }
+
+        ringingCoins.Play();
+    }
+
+    private bool CoinNotExists()
+    {
+        return coinsAmount == 0;
+    }
+
+    public void OnCollecting()
     {
         Collecting?.Invoke();
     }

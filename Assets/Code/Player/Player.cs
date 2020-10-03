@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private GameObject _gameManager;
-    [SerializeField] private GameObject _dust;
+    [SerializeField] private GameObject main;
+    [SerializeField] private GameObject dust;
 
-    private CollectingCoins _coinCollectingComponent;
-    private GameProcess _managerGameProcess;
-    private Animator _animator;
+    private CollectingCoins coinCollecting;
+    private Animator animator;
 
     private const float JUMP_FORCE_MAX = 550.0f;
     private const float JUMP_FORCE_MIN = 400.0f;
     private const float SPEED = 5.0f;
 
-    public GameProcess ManagerStateData => _managerGameProcess;
+    public Game Main => main.GetComponent<Game>();
     public float Speed { private set; get; } = SPEED;
-    public float JumpForce { private set; get; } = JUMP_FORCE_MAX;
+    public float JumpForceScale { private set; get; } = JUMP_FORCE_MAX;
 
-    public GameObject GetDustPrefab => _dust;
     public float DustLiveTime { get; } = 0.5f;
+
+    public GameObject DustPrefab => dust;
 
     public const int IDLE = 0;
     public const int WALK = 1;
@@ -32,12 +32,12 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        _coinCollectingComponent.Collecting += OnCoinNotExists;
+        coinCollecting.Collecting += OnCoinNotExists;
     }
 
     private void OnDisable()
     {
-        _coinCollectingComponent.Collecting -= OnCoinNotExists;
+        coinCollecting.Collecting -= OnCoinNotExists;
     }
 
     private void OnCoinNotExists()
@@ -47,14 +47,28 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _managerGameProcess = _gameManager.GetComponent<GameProcess>();
-        _animator = GetComponent<Animator>();
-        _coinCollectingComponent = GetComponent<CollectingCoins>();
+        animator = GetComponent<Animator>();
+        coinCollecting = GetComponent<CollectingCoins>();
     }
 
     private void Update()
     {
-        _animator.SetInteger("State", State);
-        JumpForce = (State == WALK) ? JUMP_FORCE_MIN : JUMP_FORCE_MAX;
+        ChangeSprite();
+        AdjustForceValue();
+    }
+
+    private void AdjustForceValue()
+    {
+        JumpForceScale = IsWalk() ? JUMP_FORCE_MIN : JUMP_FORCE_MAX;
+
+        bool IsWalk()
+        {
+            return State == WALK;
+        }
+    }
+
+    private void ChangeSprite()
+    {
+        animator.SetInteger("State", State);
     }
 }

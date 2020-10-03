@@ -5,17 +5,23 @@ using UnityEngine.Events;
 
 public class DeadArea : MonoBehaviour
 {
-    public event UnityAction Collide;
-    public void OnCollide() 
+    public event UnityAction Murder;
+
+    public void OnMurder()
     { 
-        Collide?.Invoke();
+        Murder?.Invoke();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Player player))
+        if (IsPlayer())
         {
-            OnCollide();
+            OnMurder();
+        }
+
+        bool IsPlayer()
+        {
+            return collision.gameObject.TryGetComponent(out Player player);
         }
     }
 }

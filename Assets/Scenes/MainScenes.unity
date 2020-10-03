@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ccaa280ad830a43b042793ef0fcc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 1416298210}
+  player: {fileID: 1416298210}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2905,7 +2905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07556b5b37e796c4e8fa6b945f21acac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sound: {fileID: 1416298220}
+  soundOfFootsteps: {fileID: 1416298220}
 --- !u!114 &1416298213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2918,7 +2918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07cef5d6cad3924081c7a5134750034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sound: {fileID: 1416298222}
+  fallingSound: {fileID: 1416298222}
 --- !u!50 &1416298214
 Rigidbody2D:
   serializedVersion: 4
@@ -2952,8 +2952,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4650a7e132204c94097e84cc976d8844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameManager: {fileID: 1558138902}
-  _dust: {fileID: 3275042764011230795, guid: e2c62f0b0a44e7a4c9845d262bdee725, type: 3}
+  main: {fileID: 1558138902}
+  dust: {fileID: 3275042764011230795, guid: e2c62f0b0a44e7a4c9845d262bdee725, type: 3}
 --- !u!212 &1416298216
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3043,7 +3043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f767565644a589242a0747b83411b898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sound: {fileID: 1416298221}
+  ringingCoins: {fileID: 1416298221}
 --- !u!95 &1416298219
 Animator:
   serializedVersion: 3
@@ -3805,21 +3805,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4da76e8424d6b944ab6e3cd697a77370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 1501242930}
-  _player: {fileID: 1416298210}
-  _deadArea: {fileID: 678212233}
-  _menuGameStarterOrEnderPrefab: {fileID: 5182759037247485201, guid: 99b44f216d18e734c963702323aaa2d3,
+  canvas: {fileID: 1501242930}
+  player: {fileID: 1416298210}
+  deathZone: {fileID: 678212233}
+  gameStarterPrefab: {fileID: 5182759037247485201, guid: 99b44f216d18e734c963702323aaa2d3,
     type: 3}
-  _menuGameResumerPrefab: {fileID: 3964069662587948830, guid: 2d2338fc71ebb92468a68236db7ac1a4,
+  gameSuspenserPrefab: {fileID: 3964069662587948830, guid: 2d2338fc71ebb92468a68236db7ac1a4,
     type: 3}
-  _meniGameEnderOrRestarterPrefab: {fileID: 7668033031834818259, guid: 622be86f558dd334089d5ac45b3211f6,
+  gameRestareterPrefab: {fileID: 7668033031834818259, guid: 622be86f558dd334089d5ac45b3211f6,
     type: 3}
-  _clipRun: {fileID: 8300000, guid: bdd5a6a97c9aeb94a819af1c59009fd8, type: 3}
-  _clipLoose: {fileID: 8300000, guid: c1bf2c5ea28b32b41b54b7092c1b84ff, type: 3}
-  _clipWinner: {fileID: 8300000, guid: bca659ea885c73a499fc33de20cf38f5, type: 3}
-  _environmentSound: {fileID: 1558138905}
-  _backgroundMusic: {fileID: 1558138906}
-  GameState: 1
+  gameRun: {fileID: 8300000, guid: bdd5a6a97c9aeb94a819af1c59009fd8, type: 3}
+  gameLosing: {fileID: 8300000, guid: c1bf2c5ea28b32b41b54b7092c1b84ff, type: 3}
+  gameWinner: {fileID: 8300000, guid: bca659ea885c73a499fc33de20cf38f5, type: 3}
+  audioNotification: {fileID: 1558138905}
+  backgroundMusic: {fileID: 1558138906}
 --- !u!82 &1558138905
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3928,7 +3927,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8061282dcc070004797ff6d6f73d4fc8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0

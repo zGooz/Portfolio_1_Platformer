@@ -8,68 +8,135 @@ using UnityEngine;
 
 public class Walk : MonoBehaviour
 {
-    [SerializeField] private AudioSource _sound;
+    [SerializeField] private AudioSource soundOfFootsteps;
 
-    private GameProcess _managerData;
-    private Rigidbody2D _body;
-    private SpriteRenderer _renderer;
-    private Player _player;
-
-    private float _speed;
-    private bool _oldFlip;
+    private Game main;
+    private Rigidbody2D body;
+    private SpriteRenderer sprite;
+    private Player player;
+    private float speed;
+    private bool previousFlip;
 
     private void Start()
     {
-        _body = GetComponent<Rigidbody2D>();
-        _renderer = GetComponent<SpriteRenderer>();
-        _player = GetComponent<Player>();
-
-        _managerData = _player.ManagerStateData;
-        _speed = _player.Speed;
+        body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        player = GetComponent<Player>();
+        main = player.Main;
+        speed = player.Speed;
     }
 
     private void Update()
     {
-        if (_managerData.GameState == GameProcess.GAME)
+        if (StateIsOutOfPlay())
         {
-            float axis = Input.GetAxisRaw("Horizontal");
+            return;
+        }
 
-            if (Input.GetButtonUp("Horizontal"))
+        float axis = Input.GetAxisRaw("Horizontal");
+
+        SetPreviousSpriteFlip();
+
+        if (IsOnGround())
+        {
+            SetPlayerState(axis);
+            // Environment : sound of footsteps, dust, etc...
+            CreateCompanionEnvironment(axis);
+        }
+
+        SetCurrentSpriteFlip(axis);
+        MovingHorizontally(axis);
+    }
+
+    private void MovingHorizontally(float axis)
+    {
+        float scaling = speed * Time.deltaTime;
+        Vector2 force = new Vector2(axis, 0) * scaling;
+
+        body.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    private void CreateCompanionEnvironment(float axis)
+    {
+        if (WalkOnGround())
+        {
+            if (! AxisIsZero(axis))
             {
-                _oldFlip = _renderer.flipX;
+                createDustAndPlaySoundOfFootsteps();
             }
+        }
 
-            if (_player.State != Player.JUMP)
-            {
-                _player.State = (axis == 0) ? Player.IDLE : Player.WALK;
+        bool WalkOnGround()
+        {
+            return Input.GetButton("Horizontal");
+        }
+    }
 
-                if (Input.GetButton("Horizontal"))
-                {
-                    if (axis != 0)
-                    {
-                        if (!_sound.isPlaying)
-                        {
-                            _sound.Play();
+    private bool AxisIsZero(float axis)
+    {
+        return axis == 0;
+    }
 
-                            Vector3 position = this.transform.position;
-                            position.Set(position.x - 0.6f, position.y, position.z);
+    private void SetCurrentSpriteFlip(float axis)
+    {
+        sprite.flipX = AxisIsZero(axis) ? previousFlip : (axis < 0);
+    }
 
-                            Destroy(Instantiate(_player.GetDustPrefab, position, Quaternion.identity), _player.DustLiveTime);
-                        }
-                    }
-                }
-            }
+    private void SetPlayerState(float axis)
+    {
+        player.State = AxisIsZero(axis) ? Player.IDLE : Player.WALK;
+    }
 
-            if (axis == 0)
-            {
-                _renderer.flipX = _oldFlip;
-            }
-            else
-            {
-                _renderer.flipX = axis < 0;
-            }
+    private void SetPreviousSpriteFlip()
+    {
+        if (StoppedMoving())
+        {
+            previousFlip = sprite.flipX;
+        }
 
-            _body.AddForce(new Vector2(axis, 0) * _speed * Time.deltaTime, ForceMode2D.Impulse);
+        bool StoppedMoving()
+        {
+            return Input.GetButtonUp("Horizontal");
+        }
+    }
+    private bool StateIsOutOfPlay()
+    {
+        return main.State != Game.GAME;
+    }
+
+    private bool IsOnGround()
+    {
+        return player.State != Player.JUMP;
+    }
+
+    private void createDustAndPlaySoundOfFootsteps()
+    {
+        if (! soundOfFootsteps.isPlaying)
+        {
+            soundOfFootsteps.Play();
+            CreateHorstOfDust();
+        }
+
+        void CreateHorstOfDust()
+        {
+            Vector3 placeForCreation = GetDustPosition();
+            GameObject dust = Instantiate(player.DustPrefab, placeForCreation, Quaternion.identity);
+
+            Destroy(dust, player.DustLiveTime);
+        }
+
+        Vector3 GetDustPosition()
+        {
+            Vector3 placeForCreation = this.transform.position;
+
+            // For some reason, the dust is not exactly in the center, I had to shift it to the left.
+            float x = placeForCreation.x - 0.6f;
+            float y = placeForCreation.y;
+            float z = placeForCreation.z;
+
+            placeForCreation.Set(x, y, z);
+
+            return placeForCreation;
         }
     }
 }

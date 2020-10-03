@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-    [SerializeField] private GameObject _target;
+    [SerializeField] private GameObject player;
 
     private float z;
 
@@ -15,7 +15,8 @@ public class Camera : MonoBehaviour
 
     private void Update()
     {
-        Vector3 _targetTransform = _target.transform.position;
-        transform.position = new Vector3(_targetTransform.x, _targetTransform.y, z);
+        Vector3 playerTransform = player.transform.position;
+
+        transform.position = new Vector3(playerTransform.x, playerTransform.y, z);
     }
 }
