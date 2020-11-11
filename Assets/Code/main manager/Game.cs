@@ -45,18 +45,6 @@ public class Game : MonoBehaviour
 
     public int State { private set; get; } = MENU;
 
-    private void ChangeAndRunSound(AudioSource source, AudioClip clip)
-    {
-        source.clip = clip;
-        source.Play();
-    }
-
-    private void createMenuBox<T>(ref GameObject box, ref GameObject prefab, ref T component)
-    {
-        box = Instantiate(prefab, canvas.transform);
-        component = box.GetComponent<T>();
-    }
-
     private void Awake()
     {
         createMenuBox(ref gameStarter, ref gameStarterPrefab, ref scriptGameStart);
@@ -81,13 +69,13 @@ public class Game : MonoBehaviour
 
         if (scriptGameEnd is GameRestartOrEnd) 
         {
-            scriptGameEnd.RestartGame -= OnGameRestart;
-            scriptGameEnd.ExitGame -= OnGameEnd;
+            scriptGameEnd.Restart -= OnGameRestart;
+            scriptGameEnd.Exit -= OnGameEnd;
         }
 
         if (scriptGamePause is GameResume)
         {
-            scriptGamePause.ResumeGame -= OnGameResume;
+            scriptGamePause.Resume -= OnGameResume;
         }
     }
 
@@ -106,15 +94,15 @@ public class Game : MonoBehaviour
     {
         State = PAUSE;
         createMenuBox(ref gameSuspenser, ref gameSuspenserPrefab, ref scriptGamePause);
-        scriptGamePause.ResumeGame += OnGameResume;
+        scriptGamePause.Resume += OnGameResume;
     }
 
     private void SetWinner()
     {
         State = WINNER;
         createMenuBox(ref gameRestarter, ref gameRestareterPrefab, ref scriptGameEnd);
-        scriptGameEnd.RestartGame += OnGameRestart;
-        scriptGameEnd.ExitGame += OnGameEnd;
+        scriptGameEnd.Restart += OnGameRestart;
+        scriptGameEnd.Exit += OnGameEnd;
     }
 
     private bool StateIsInGame()
@@ -165,5 +153,17 @@ public class Game : MonoBehaviour
     {
         Debug.Log("Application.Quit();");
         Application.Quit();
+    }
+
+    private void createMenuBox<T>(ref GameObject box, ref GameObject prefab, ref T component)
+    {
+        box = Instantiate(prefab, canvas.transform);
+        component = box.GetComponent<T>();
+    }
+
+    private void ChangeAndRunSound(AudioSource source, AudioClip clip)
+    {
+        source.clip = clip;
+        source.Play();
     }
 }

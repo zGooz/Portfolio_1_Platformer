@@ -32,13 +32,6 @@ public class GameStartOrEnd : MonoBehaviour
         clickToExitButton.Click -= OnExitGame;
     }
 
-    private void OnStartGame()
-    {
-        StartGame?.Invoke();
-    }
-
-    private void OnExitGame()
-    {
-        ExitGame?.Invoke();
-    }
+    private void OnStartGame() { StartGame?.Invoke(); }
+    private void OnExitGame() { ExitGame?.Invoke(); }
 }

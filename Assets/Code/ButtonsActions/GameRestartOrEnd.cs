@@ -5,40 +5,33 @@ using UnityEngine.Events;
 
 public class GameRestartOrEnd : MonoBehaviour
 {
-    [SerializeField] GameObject buttonGameRestart;
-    [SerializeField] GameObject buttonGameExit;
+    [SerializeField] private GameObject buttonRestart;
+    [SerializeField] private GameObject buttonExit;
 
-    private ButtonClick clickToRestartButton;
-    private ButtonClick clickToExitButton;
+    private ButtonClick clickForRestart;
+    private ButtonClick clickForExit;
 
-    public event UnityAction RestartGame;
-    public event UnityAction ExitGame;
+    public event UnityAction Restart;
+    public event UnityAction Exit;
 
     private void Awake()
     {
-        clickToRestartButton = buttonGameRestart.GetComponent<ButtonClick>();
-        clickToExitButton = buttonGameExit.GetComponent<ButtonClick>();
+        clickForRestart = buttonRestart.GetComponent<ButtonClick>();
+        clickForExit = buttonExit.GetComponent<ButtonClick>();
     }
 
     private void OnEnable()
     {
-        clickToRestartButton.Click += OnRestartGame;
-        clickToExitButton.Click += OnExitGame;
+        clickForRestart.Click += OnRestartGame;
+        clickForExit.Click += OnExitGame;
     }
 
     private void OnDisable()
     {
-        clickToRestartButton.Click -= OnRestartGame;
-        clickToExitButton.Click -= OnExitGame;
+        clickForRestart.Click -= OnRestartGame;
+        clickForExit.Click -= OnExitGame;
     }
 
-    private void OnRestartGame()
-    {
-        RestartGame?.Invoke();
-    }
-
-    private void OnExitGame()
-    {
-        ExitGame?.Invoke();
-    }
+    private void OnRestartGame() { Restart?.Invoke(); }
+    private void OnExitGame() { Exit?.Invoke(); }
 }
