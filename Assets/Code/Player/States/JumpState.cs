@@ -1,59 +1,62 @@
 ﻿
 using UnityEngine;
 
-namespace Assets.Code.Player.States
+[RequireComponent(typeof(Rigidbody2D))]
+
+public class JumpState : MonoBehaviour, IPlayerState
 {
-    [RequireComponent(typeof(Rigidbody2D))]
+    private PlayerStateMachine machine;
+    private Rigidbody2D body;
+    private Player player;
+    private bool isOnGround = true;
 
-    public class JumpState : MonoBehaviour, IPlayerState
+    private void Awake()
     {
-        private PlayerStateMachine machine;
-        private Rigidbody2D body;
-        private Player player;
+        machine = GetComponentInParent<PlayerStateMachine>();
+        body = GetComponentInParent<Rigidbody2D>();
+        player = GetComponentInParent<Player>();
+    }
 
-        private void Awake()
-        {
-            machine = GetComponent<PlayerStateMachine>();
-            body = GetComponent<Rigidbody2D>();
-            player = GetComponent<Player>();
-        }
-
-        public void Jumping()
+    public void Jumping()
+    {
+        if (isOnGround)
         {
             Jump();
+            isOnGround = false;
         }
+    }
 
-        public void Walking()
+    public void Walking(float axis)
+    {
+        Shift();
+    }
+
+    public void Nothing() {} // <- interface implement
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Platform platform))
         {
-            Shift();
+            machine.State = machine.Idle;
+            isOnGround = true;
         }
+    }
 
-        public void Nothing() {}
+    private void Shift()
+    {
+        float axis = Input.GetAxisRaw("Horizontal");
+        AddForce(player.Shift, new Vector2(axis, 0));
+    }
 
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.TryGetComponent(out Platform platform))
-            {
-                machine.State = machine.Idle;
-            }
-        }
+    private void Jump()
+    {
+        AddForce(player.JumpForce, new Vector2(0, 1));
+    }
 
-        private void Shift()
-        {
-            float axis = Input.GetAxisRaw("Horizontal");
-            AddForce(player.Shift, new Vector2(axis, 0));
-        }
-
-        private void Jump()
-        {
-            AddForce(player.JumpForce, new Vector2(0, 1));
-        }
-
-        private void AddForce(float value, Vector2 vector)
-        {
-            float scaling = value * Time.deltaTime;
-            Vector2 force = vector * scaling;
-            body.AddForce(force, ForceMode2D.Impulse);
-        }
+    private void AddForce(float value, Vector2 vector)
+    {
+        float scaling = value * Time.deltaTime;
+        Vector2 force = vector * scaling;
+        body.AddForce(force, ForceMode2D.Impulse);
     }
 }

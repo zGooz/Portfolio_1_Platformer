@@ -1,66 +1,68 @@
 ﻿
 using UnityEngine;
-using Assets.Code.Menu_and_GameState.States;
 
-namespace Assets.Code.Menu_and_GameState
+public class GameStateMachine : MonoBehaviour
 {
-    public class GameStateMachine : MonoBehaviour
+    [SerializeField] private GameObject elementaryMenu;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject finalyMenu;
+
+    private GameObject currentMenu;
+
+    private IGameState applicationRun;
+    private IGameState gameProcess;
+    private IGameState pauseGame;
+    private IGameState playerDie;
+    private IGameState coinFinish;
+    private IGameState gameEndState;
+
+    public IGameState State { get; set; }
+    public IGameState ApplicationRun => applicationRun;
+    public IGameState GameProcess => gameProcess;
+    public IGameState PauseGame => pauseGame;
+    public IGameState PlayerDie => playerDie;
+    public IGameState CoinFinish => coinFinish;
+    public IGameState GameEndState => gameEndState;
+
+    private void Awake()
     {
-        [SerializeField] private GameObject elementaryMenu;
-        [SerializeField] private GameObject pauseMenu;
-        [SerializeField] private GameObject finalyMenu;
+        applicationRun = gameObject.AddComponent<ElementaryMenuState>();
+        gameProcess = gameObject.AddComponent<GameProcessState>();
+        pauseGame = gameObject.AddComponent<PauseGameState>();
+        playerDie = gameObject.AddComponent<PlayerDieState>();
+        coinFinish = gameObject.AddComponent<CoinNotExistsState>();
+        gameEndState = gameObject.AddComponent<GameEndState>();
 
-        private GameObject currentMenu;
+        State = gameProcess; // applicationRun;
+        currentMenu = null;
+    }
 
-        public readonly IGameState applicationRun;
-        public readonly IGameState gameProcess;
-        public readonly IGameState pauseGame;
-        public readonly IGameState playerDie;
-        public readonly IGameState coinFinish;
-        public readonly IGameState gameEndState;
+    public bool HasMenu()
+    {
+        return currentMenu != null;
+    }
 
-        public IGameState State { get; set; }
+    public void CreateElementaryMenu()
+    {
+        DeleteMenu();
+        currentMenu = Instantiate(elementaryMenu);
+    }
 
-        public GameStateMachine()
-        {
-            applicationRun = GetComponent<ElementaryMenuState>();
-            gameProcess = GetComponent<GameProcessState>();
-            pauseGame = GetComponent<PauseGameState>();
-            playerDie = GetComponent<PlayerDieState>();
-            coinFinish = GetComponent<CoinNotExistsState>();
-            gameEndState = GetComponent<GameEndState>();
+    public void CreatePauseMenu()
+    {
+        DeleteMenu();
+        currentMenu = Instantiate(pauseMenu);
+    }
 
-            State = applicationRun;
-            currentMenu = null;
-        }
+    public void CreateFinalyMenu()
+    {
+        DeleteMenu();
+        currentMenu = Instantiate(finalyMenu);
+    }
 
-        public bool HasMenu()
-        {
-            return currentMenu != null;
-        }
-
-        public void CreateElementaryMenu()
-        {
-            DeleteMenu();
-            currentMenu = Instantiate(elementaryMenu);
-        }
-
-        public void CreatePauseMenu()
-        {
-            DeleteMenu();
-            currentMenu = Instantiate(pauseMenu);
-        }
-
-        public void CreateFinalyMenu()
-        {
-            DeleteMenu();
-            currentMenu = Instantiate(finalyMenu);
-        }
-
-        public void DeleteMenu()
-        {
-            Destroy(currentMenu);
-            currentMenu = null;
-        }
+    public void DeleteMenu()
+    {
+        Destroy(currentMenu);
+        currentMenu = null;
     }
 }

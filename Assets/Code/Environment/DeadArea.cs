@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-
 public class DeadArea : MonoBehaviour
 {
     public event UnityAction Murder;

@@ -1,14 +1,16 @@
 ﻿
 using UnityEngine;
 
-
 public class Camera : MonoBehaviour
 {
     [SerializeField] 
     private GameObject target;
     private float z;
 
-    private void Awake() { z = transform.position.z; }
+    private void Awake() 
+    { 
+        z = transform.position.z; 
+    }
 
     private void Update()
     {

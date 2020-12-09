@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{100AE41E-9853-00A1-0814-C759729749EB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -69,12 +68,12 @@
     <Compile Include="Assets\Code\Environment\Coin.cs" />
     <Compile Include="Assets\Code\Environment\DeadArea.cs" />
     <Compile Include="Assets\Code\Environment\Platform.cs" />
-    <Compile Include="Assets\Code\Menu_and_GameState\ButtonClick.cs" />
-    <Compile Include="Assets\Code\Menu_and_GameState\ElementaryMenu\ElementaryMenu.cs" />
-    <Compile Include="Assets\Code\Menu_and_GameState\FinalyMenu\FinalyMenu.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\GameStateMachine.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\IGameState.cs" />
-    <Compile Include="Assets\Code\Menu_and_GameState\PauseMenu\PauseMenu.cs" />
+    <Compile Include="Assets\Code\Menu_and_GameState\Menu\ButtonClick.cs" />
+    <Compile Include="Assets\Code\Menu_and_GameState\Menu\ElementaryMenu\ElementaryMenu.cs" />
+    <Compile Include="Assets\Code\Menu_and_GameState\Menu\FinalyMenu\FinalyMenu.cs" />
+    <Compile Include="Assets\Code\Menu_and_GameState\Menu\PauseMenu\PauseMenu.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\States\CoinNotExistsState.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\States\ElementaryMenuState.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\States\GameEndState.cs" />
@@ -697,8 +696,7 @@
       <HintPath>G:/work/project/Unity/Platformer/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
+  <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

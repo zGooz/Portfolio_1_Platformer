@@ -1,47 +1,70 @@
 ﻿
 using UnityEngine;
-using Assets.Code.Menu_and_GameState;
 
-namespace Assets.Code.Player
+public class Player : MonoBehaviour
 {
-    public class Player : MonoBehaviour
+    [SerializeField]
+    private GameStateMachine game;
+    private PlayerStateMachine machine;
+    private delegate void WalkMethodSignature(float axis); 
+
+    public float Speed { get; } = 7.0f;
+    public float Shift { get; } = 2.0f;
+    public float JumpForce { get; } = 400.0f;
+
+    private void Awake()
     {
-        private GameStateMachine game;
-        private PlayerStateMachine machine;
+        machine = GetComponent<PlayerStateMachine>();
+    }
 
-        public float Speed { get; } = 6.0f;
-        public float Shift { get; } = 1.0f;
-        public float JumpForce { get; } = 200.0f;
+    private void Update()
+    {
+        float axis = Input.GetAxisRaw("Horizontal");
 
-        private void Awake()
+        if (axis != 0)
+            Walk(axis);
+        else
+            Idle();
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            machine = GetComponent<PlayerStateMachine>();
-            game = GetComponent<GameStateMachine>();
+            Jump();
         }
+    }
 
-        public void Walk()
+    public void Walk(float axis)
+    {
+        Execute(machine.State.Walking, axis);
+    }
+
+    public void Jump()
+    {
+        Execute(machine.State.Jumping);
+    }
+
+    public void Idle()
+    {
+        Execute(machine.State.Nothing);
+    }
+
+    private void Execute(System.Action method)
+    {
+        if (!IsGameOut())
         {
-            Execute(machine.State.Walking);
+            method?.Invoke();
         }
+    }
 
-        public void Jump()
+    private void Execute(WalkMethodSignature method, float axis)
+    {
+        if (! IsGameOut())
         {
-            Execute(machine.State.Jumping);
+            method?.Invoke(axis);
         }
+    }
 
-        public void Idle()
-        {
-            Execute(machine.State.Nothing);
-        }
-
-        private void Execute(System.Action method)
-        {
-            var isGameOut = game.State != game.gameProcess;
-
-            if (!isGameOut)
-            {
-                method?.Invoke();
-            }
-        }
+    private bool IsGameOut()
+    {
+        return game.State != game.GameProcess;
     }
 }

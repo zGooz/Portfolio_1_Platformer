@@ -1,45 +1,36 @@
 ﻿
 using UnityEngine;
 
-namespace Assets.Code.Player.States
+[RequireComponent(typeof(Rigidbody2D))]
+
+public class WalkState : MonoBehaviour, IPlayerState
 {
-    [RequireComponent(typeof(Rigidbody2D))]
+    private PlayerStateMachine machine;
+    private Rigidbody2D body;
+    private Player player;
 
-    public class WalkState : MonoBehaviour, IPlayerState
+    private void Awake()
     {
-        private PlayerStateMachine machine;
-        private Rigidbody2D body;
-        private Player player;
+        machine = GetComponentInParent<PlayerStateMachine>();
+        body = GetComponentInParent<Rigidbody2D>();
+        player = GetComponentInParent<Player>();
+    }
 
-        private void Awake()
-        {
-            machine = GetComponent<PlayerStateMachine>();
-            body = GetComponent<Rigidbody2D>();
-            player = GetComponent<Player>();
-        }
+    public void Walking(float axis)
+    {
+        float scaling = player.Speed * Time.deltaTime;
+        Vector2 force = new Vector2(axis, 0) * scaling;
+        body.AddForce(force, ForceMode2D.Impulse);
+    }
 
-        public void Walking()
-        {
-            Move();
-        }
+    public void Jumping()
+    {
+        machine.State = machine.Jump;
+        machine.State.Jumping();
+    }
 
-        public void Jumping()
-        {
-            machine.State = machine.Jump;
-        }
-
-        public void Nothing() 
-        {
-            machine.State = machine.Idle;
-        }
-
-        private void Move()
-        {
-            float axis = Input.GetAxisRaw("Horizontal");
-            float scaling = player.Speed * Time.deltaTime;
-            Vector2 force = new Vector2(axis, 0) * scaling;
-
-            body.AddForce(force, ForceMode2D.Impulse);
-        }
+    public void Nothing() 
+    {
+        machine.State = machine.Idle;
     }
 }

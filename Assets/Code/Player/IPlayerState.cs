@@ -1,10 +1,7 @@
 ﻿
-namespace Assets.Code.Player
+public interface IPlayerState
 {
-    public interface IPlayerState
-    {
-        void Walking();
-        void Jumping();
-        void Nothing();
-    }
+    void Walking(float axis);
+    void Jumping();
+    void Nothing();
 }

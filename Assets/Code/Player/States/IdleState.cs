@@ -1,32 +1,25 @@
 ﻿
 using UnityEngine;
 
-namespace Assets.Code.Player.States
+public class IdleState : MonoBehaviour, IPlayerState
 {
-    public class IdleState : MonoBehaviour, IPlayerState
+    private PlayerStateMachine machine;
+
+    private void Awake()
     {
-        private PlayerStateMachine machine;
-        private Rigidbody2D body;
-        private Player player;
-
-        private void Awake()
-        {
-            machine = GetComponent<PlayerStateMachine>();
-            body = GetComponent<Rigidbody2D>();
-            player = GetComponent<Player>();
-        }
-
-        public void Jumping()
-        {
-            machine.State = machine.Jump;
-        }
-
-        public void Walking()
-        {
-            machine.State = machine.Walk;
-        }
-
-        public void Nothing() {}
-
+        machine = GetComponentInParent<PlayerStateMachine>();
     }
+
+    public void Jumping()
+    {
+        machine.State = machine.Jump;
+        machine.State.Jumping();
+    }
+
+    public void Walking(float axis)
+    {
+        machine.State = machine.Walk;
+    }
+
+    public void Nothing() {} // <- interface implement
 }

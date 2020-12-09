@@ -1,24 +1,23 @@
 ﻿
-using Assets.Code.Player.States;
 using UnityEngine;
 
-namespace Assets.Code.Player
+public class PlayerStateMachine : MonoBehaviour
 {
-    public class PlayerStateMachine : MonoBehaviour
+    private IPlayerState walk;
+    private IPlayerState jump;
+    private IPlayerState idle;
+
+    public IPlayerState Walk => walk;
+    public IPlayerState Jump => jump;
+    public IPlayerState Idle => idle;
+    public IPlayerState State { get; set; }
+
+    private void Awake()
     {
-        public readonly IPlayerState Walk;
-        public readonly IPlayerState Jump;
-        public readonly IPlayerState Idle;
+        walk = gameObject.AddComponent<WalkState>();
+        jump = gameObject.AddComponent<JumpState>();
+        idle = gameObject.AddComponent<IdleState>();
 
-        public IPlayerState State { get; set; }
-
-        public PlayerStateMachine()
-        {
-            Walk = GetComponent<WalkState>();
-            Jump = GetComponent<JumpState>();
-            Idle = GetComponent<IdleState>();
-
-            State = Idle;
-        }
+        State = Idle;
     }
 }
