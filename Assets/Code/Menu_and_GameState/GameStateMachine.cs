@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameStateMachine : MonoBehaviour
 {
+    [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject elementaryMenu;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject finalyMenu;
@@ -17,6 +18,7 @@ public class GameStateMachine : MonoBehaviour
     private IGameState gameEndState;
 
     public IGameState State { get; set; }
+
     public IGameState ApplicationRun => applicationRun;
     public IGameState GameProcess => gameProcess;
     public IGameState PauseGame => pauseGame;
@@ -33,8 +35,16 @@ public class GameStateMachine : MonoBehaviour
         coinFinish = gameObject.AddComponent<CoinNotExistsState>();
         gameEndState = gameObject.AddComponent<GameEndState>();
 
-        State = gameProcess; // applicationRun;
-        currentMenu = null;
+        State = applicationRun;
+        CreateElementaryMenu();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            CreatePauseMenu();
+        }
     }
 
     public bool HasMenu()
@@ -44,20 +54,24 @@ public class GameStateMachine : MonoBehaviour
 
     public void CreateElementaryMenu()
     {
-        DeleteMenu();
-        currentMenu = Instantiate(elementaryMenu);
+        CreateMenu(elementaryMenu, applicationRun);
     }
 
     public void CreatePauseMenu()
     {
-        DeleteMenu();
-        currentMenu = Instantiate(pauseMenu);
+        CreateMenu(pauseMenu, pauseGame);
     }
 
-    public void CreateFinalyMenu()
+    public void CreateFinalyMenu(IGameState state)
+    {
+        CreateMenu(finalyMenu, state);
+    }
+
+    private void CreateMenu(GameObject menu, IGameState state)
     {
         DeleteMenu();
-        currentMenu = Instantiate(finalyMenu);
+        State = state;
+        currentMenu = Instantiate(menu, canvas.transform);
     }
 
     public void DeleteMenu()

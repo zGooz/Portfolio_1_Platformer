@@ -1,16 +1,15 @@
 ﻿
 using UnityEngine;
-using UnityEngine.Events;
 
 public class DeadArea : MonoBehaviour
 {
-    public event UnityAction Murder;
-
     private void OnTriggerExit2D(Collider2D collision)
     {
-        bool isPlayer = collision.gameObject.TryGetComponent(out Player player);
-        if (isPlayer) { OnMurder(); }
+        if (collision.gameObject.TryGetComponent(out Player player))
+        {
+            var game = player.GameStateMachine;
+            game.State = game.PlayerDie;
+            game.CreateFinalyMenu(game.State);
+        }
     }
-
-    public void OnMurder() { Murder?.Invoke(); }
 }

@@ -11,18 +11,19 @@ public class Player : MonoBehaviour
     public float Speed { get; } = 7.0f;
     public float Shift { get; } = 2.0f;
     public float JumpForce { get; } = 400.0f;
+    public GameStateMachine GameStateMachine => game;
+    public int CoinAmount { get; set; }
 
     private void Awake()
     {
         machine = GetComponent<PlayerStateMachine>();
+        CoinAmount = FindObjectsOfType<Coin>().Length;
     }
 
     private void Update()
     {
-        float axis = Input.GetAxisRaw("Horizontal");
-
-        if (axis != 0)
-            Walk(axis);
+        if (Input.GetButton("Horizontal"))
+            Walk(Input.GetAxisRaw("Horizontal"));
         else
             Idle();
 

@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ccaa280ad830a43b042793ef0fcc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1416298210}
+  player: {fileID: 1416298210}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -883,6 +883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 678212235}
   - component: {fileID: 678212234}
+  - component: {fileID: 678212236}
   m_Layer: 0
   m_Name: DeadArea
   m_TagString: Untagged
@@ -930,6 +931,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &678212236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678212233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0f6dd1cadfa0d478bf78e7de73e991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &720845136
 GameObject:
   m_ObjectHideFlags: 0
@@ -2854,6 +2867,7 @@ GameObject:
   - component: {fileID: 1416298219}
   - component: {fileID: 1416298220}
   - component: {fileID: 1416298218}
+  - component: {fileID: 1416298212}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2875,6 +2889,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1416298212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416298210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 197ea33529672df4d8f07e0ee2cb5ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &1416298214
 Rigidbody2D:
   serializedVersion: 4
@@ -3469,6 +3495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516d19ea274e83641a3164df9b403d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1501242930}
   elementaryMenu: {fileID: 4710457090596847722, guid: 2807270d869e73e4981f8484dd23ea9d,
     type: 3}
   pauseMenu: {fileID: 3651105047375940117, guid: 349f07c3a0bade74498cfce1bdd4c1a2,

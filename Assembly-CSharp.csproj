@@ -80,9 +80,10 @@
     <Compile Include="Assets\Code\Menu_and_GameState\States\GameProcessState.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\States\PauseGameState.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\States\PlayerDieState.cs" />
-    <Compile Include="Assets\Code\Player\IPlayerState.cs" />
     <Compile Include="Assets\Code\Player\Player.cs" />
-    <Compile Include="Assets\Code\Player\PlayerStateMachine.cs" />
+    <Compile Include="Assets\Code\Player\PlayerAnimation\PlayerAnimator.cs" />
+    <Compile Include="Assets\Code\Player\States\Base\IPlayerState.cs" />
+    <Compile Include="Assets\Code\Player\States\Base\PlayerStateMachine.cs" />
     <Compile Include="Assets\Code\Player\States\IdleState.cs" />
     <Compile Include="Assets\Code\Player\States\JumpState.cs" />
     <Compile Include="Assets\Code\Player\States\WalkState.cs" />
