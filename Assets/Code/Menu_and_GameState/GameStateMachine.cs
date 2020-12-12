@@ -10,21 +10,21 @@ public class GameStateMachine : MonoBehaviour
 
     private GameObject currentMenu;
 
-    private IGameState applicationRun;
-    private IGameState gameProcess;
-    private IGameState pauseGame;
-    private IGameState playerDie;
-    private IGameState coinFinish;
-    private IGameState gameEndState;
+    private GameState applicationRun;
+    private GameState gameProcess;
+    private GameState pauseGame;
+    private GameState playerDie;
+    private GameState coinFinish;
+    private GameState gameEndState;
 
-    public IGameState State { get; set; }
+    public GameState State { get; set; }
 
-    public IGameState ApplicationRun => applicationRun;
-    public IGameState GameProcess => gameProcess;
-    public IGameState PauseGame => pauseGame;
-    public IGameState PlayerDie => playerDie;
-    public IGameState CoinFinish => coinFinish;
-    public IGameState GameEndState => gameEndState;
+    public GameState ApplicationRun => applicationRun;
+    public GameState GameProcess => gameProcess;
+    public GameState PauseGame => pauseGame;
+    public GameState PlayerDie => playerDie;
+    public GameState CoinFinish => coinFinish;
+    public GameState GameEndState => gameEndState;
 
     private void Awake()
     {
@@ -62,12 +62,12 @@ public class GameStateMachine : MonoBehaviour
         CreateMenu(pauseMenu, pauseGame);
     }
 
-    public void CreateFinalyMenu(IGameState state)
+    public void CreateFinalyMenu(GameState state)
     {
         CreateMenu(finalyMenu, state);
     }
 
-    private void CreateMenu(GameObject menu, IGameState state)
+    private void CreateMenu(GameObject menu, GameState state)
     {
         DeleteMenu();
         State = state;

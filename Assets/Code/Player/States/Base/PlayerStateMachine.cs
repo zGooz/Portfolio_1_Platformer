@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
 {
-    private IPlayerState walk;
-    private IPlayerState jump;
-    private IPlayerState idle;
+    private PlayerState walk;
+    private PlayerState jump;
+    private PlayerState idle;
 
-    public IPlayerState Walk => walk;
-    public IPlayerState Jump => jump;
-    public IPlayerState Idle => idle;
+    public PlayerState Walk => walk;
+    public PlayerState Jump => jump;
+    public PlayerState Idle => idle;
 
-    public IPlayerState State { get; set; }
+    public PlayerState State { get; set; }
 
     private void Awake()
     {

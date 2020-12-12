@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
-public class WalkState : MonoBehaviour, IPlayerState
+public class WalkState : PlayerState
 {
     private PlayerStateMachine machine;
     private Rigidbody2D body;
@@ -16,20 +16,20 @@ public class WalkState : MonoBehaviour, IPlayerState
         player = GetComponentInParent<Player>();
     }
 
-    public void Walking(float axis)
+    public override void Walking(float axis)
     {
         float scaling = player.Speed * Time.deltaTime;
         Vector2 force = new Vector2(axis, 0) * scaling;
         body.AddForce(force, ForceMode2D.Impulse);
     }
 
-    public void Jumping()
+    public override void Jumping()
     {
         machine.State = machine.Jump;
         machine.State.Jumping();
     }
 
-    public void Nothing() 
+    public override void Nothing() 
     {
         machine.State = machine.Idle;
     }

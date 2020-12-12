@@ -1,8 +1,7 @@
 ﻿
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameProcessState : MonoBehaviour, IGameState
+public class GameProcessState : GameState
 {
     private GameStateMachine machine;
 
@@ -11,7 +10,7 @@ public class GameProcessState : MonoBehaviour, IGameState
         machine = GetComponent<GameStateMachine>();
     }
 
-    public void PauseGame()
+    public override void PauseGame()
     {
         machine.State = machine.PauseGame;
 
@@ -21,13 +20,9 @@ public class GameProcessState : MonoBehaviour, IGameState
         }
     }
 
-    public void ReloadGame()
+    public override void ReloadGame()
     {
         string scene = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
-
-    public void ExitGame() {}
-    public void StartGame() {}
-    public void ResumeGame() {}
 }

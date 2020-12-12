@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CoinNotExistsState : MonoBehaviour, IGameState
+public class CoinNotExistsState : GameState
 {
     private GameStateMachine machine;
 
@@ -11,13 +11,13 @@ public class CoinNotExistsState : MonoBehaviour, IGameState
         machine = GetComponent<GameStateMachine>();
     }
 
-    public void ReloadGame()
+    public override void ReloadGame()
     {
         string scene = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 
-    public void ExitGame()
+    public override void ExitGame()
     {
         machine.State = machine.GameEndState;
 
@@ -28,8 +28,4 @@ public class CoinNotExistsState : MonoBehaviour, IGameState
 
         Application.Quit();
     }
-
-    public void PauseGame() {}
-    public void StartGame() {}
-    public void ResumeGame() {}
 }

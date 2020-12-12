@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class PauseGameState : MonoBehaviour, IGameState
+public class PauseGameState : GameState
 {
     private GameStateMachine machine;
 
@@ -10,7 +10,7 @@ public class PauseGameState : MonoBehaviour, IGameState
         machine = GetComponent<GameStateMachine>();
     }
 
-    public void ExitGame()
+    public override void ExitGame()
     {
         machine.State = machine.GameEndState;
 
@@ -22,7 +22,7 @@ public class PauseGameState : MonoBehaviour, IGameState
         Application.Quit();
     }
 
-    public void ResumeGame()
+    public override void ResumeGame()
     {
         machine.State = machine.GameProcess;
 
@@ -31,8 +31,4 @@ public class PauseGameState : MonoBehaviour, IGameState
             machine.DeleteMenu();
         }
     }
-
-    public void PauseGame() {}
-    public void ReloadGame() {}
-    public void StartGame() {}
 }

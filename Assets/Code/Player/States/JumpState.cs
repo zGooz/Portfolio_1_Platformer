@@ -1,14 +1,17 @@
 ﻿
+using UnityEngine.Events;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
-public class JumpState : MonoBehaviour, IPlayerState
+public class JumpState : PlayerState
 {
     private PlayerStateMachine machine;
     private Rigidbody2D body;
     private Player player;
     private bool isOnGround = true;
+
+    public event UnityAction DropDown;
 
     private void Awake()
     {
@@ -17,7 +20,7 @@ public class JumpState : MonoBehaviour, IPlayerState
         player = GetComponentInParent<Player>();
     }
 
-    public void Jumping()
+    public override void Jumping()
     {
         if (isOnGround)
         {
@@ -26,17 +29,20 @@ public class JumpState : MonoBehaviour, IPlayerState
         }
     }
 
-    public void Walking(float axis)
+    public override void Walking(float axis)
     {
         Shift();
     }
-
-    public void Nothing() {} // <- interface implement
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent(out Platform platform))
         {
+            if (!isOnGround)
+            {
+                DropDown?.Invoke();
+            }
+
             machine.State = machine.Idle;
             isOnGround = true;
         }
