@@ -13,15 +13,14 @@ public class PlayerGraphicsEffect : MonoBehaviour
         machine = GetComponent<PlayerStateMachine>();
         jumpState = GetComponent<JumpState>();
     }
-
     private void OnEnable()
     {
-        jumpState.DropDown += OnCreateDust;
+        jumpState.FallToGround += OnDustEffectCreate;
     }
 
     private void OnDisable()
     {
-        jumpState.DropDown -= OnCreateDust;
+        jumpState.FallToGround -= OnDustEffectCreate;
     }
 
     private void Update()
@@ -32,7 +31,7 @@ public class PlayerGraphicsEffect : MonoBehaviour
         }
     }
 
-    private void OnCreateDust()
+    private void OnDustEffectCreate()
     {
         CreateDust();
     }
@@ -42,7 +41,7 @@ public class PlayerGraphicsEffect : MonoBehaviour
         if (currentDust == null)
         {
             currentDust = Instantiate(dust, this.gameObject.transform);
-            Destroy(currentDust, 0.5f);
+            Destroy(currentDust, 0.7f);
         }
     }
 }

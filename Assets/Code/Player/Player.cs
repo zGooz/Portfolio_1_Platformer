@@ -8,9 +8,9 @@ public class Player : MonoBehaviour
     private PlayerStateMachine machine;
     private delegate void WalkMethodSignature(float axis); 
 
-    public float Speed { get; } = 7.0f;
-    public float Shift { get; } = 2.0f;
-    public float JumpForce { get; } = 400.0f;
+    public float Speed { get; } = 8.0f;
+    public float Shift { get; } = 3.0f;
+    public float JumpForce { get; } = 240.0f;
     public GameStateMachine GameStateMachine => game;
     public int CoinAmount { get; set; }
 

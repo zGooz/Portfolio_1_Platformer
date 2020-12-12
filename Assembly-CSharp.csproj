@@ -65,7 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Code\Environment\Camera.cs" />
-    <Compile Include="Assets\Code\Environment\Coin.cs" />
+    <Compile Include="Assets\Code\Environment\Coins\Coin.cs" />
+    <Compile Include="Assets\Code\Environment\Coins\Stars.cs" />
     <Compile Include="Assets\Code\Environment\DeadArea.cs" />
     <Compile Include="Assets\Code\Environment\Platform.cs" />
     <Compile Include="Assets\Code\Menu_and_GameState\GameState.cs" />

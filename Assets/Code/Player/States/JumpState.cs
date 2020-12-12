@@ -11,7 +11,7 @@ public class JumpState : PlayerState
     private Player player;
     private bool isOnGround = true;
 
-    public event UnityAction DropDown;
+    public event UnityAction FallToGround;
 
     private void Awake()
     {
@@ -40,7 +40,7 @@ public class JumpState : PlayerState
         {
             if (!isOnGround)
             {
-                DropDown?.Invoke();
+                FallToGround?.Invoke();
             }
 
             machine.State = machine.Idle;

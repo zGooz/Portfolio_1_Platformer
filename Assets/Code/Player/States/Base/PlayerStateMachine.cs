@@ -15,10 +15,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        walk = gameObject.AddComponent<WalkState>();
-        jump = gameObject.AddComponent<JumpState>();
-        idle = gameObject.AddComponent<IdleState>();
-
+        walk = GetComponent<WalkState>();
+        jump = GetComponent<JumpState>();
+        idle = GetComponent<IdleState>();
         State = Idle;
     }
 }
