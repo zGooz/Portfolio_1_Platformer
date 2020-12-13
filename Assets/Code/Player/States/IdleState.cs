@@ -7,7 +7,7 @@ public class IdleState : PlayerState
 
     private void Awake()
     {
-        machine = GetComponentInParent<PlayerStateMachine>();
+        machine = GetComponent<PlayerStateMachine>();
     }
 
     public override void Jumping()

@@ -15,9 +15,9 @@ public class JumpState : PlayerState
 
     private void Awake()
     {
-        machine = GetComponentInParent<PlayerStateMachine>();
-        body = GetComponentInParent<Rigidbody2D>();
-        player = GetComponentInParent<Player>();
+        machine = GetComponent<PlayerStateMachine>();
+        body = GetComponent<Rigidbody2D>();
+        player = GetComponent<Player>();
     }
 
     public override void Jumping()
