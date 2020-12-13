@@ -14,7 +14,7 @@ public class GameProcessState : GameState
     {
         machine.State = machine.PauseGame;
 
-        if (!machine.HasMenu())
+        if (machine.HasMenu() == false)
         {
             machine.CreatePauseMenu();
         }

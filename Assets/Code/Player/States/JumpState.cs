@@ -38,10 +38,8 @@ public class JumpState : PlayerState
     {
         if (collision.gameObject.TryGetComponent(out Platform platform))
         {
-            if (!isOnGround)
-            {
+            if (isOnGround == false)
                 FallToGround?.Invoke();
-            }
 
             machine.State = machine.Idle;
             isOnGround = true;

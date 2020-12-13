@@ -28,12 +28,12 @@ public class GameStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        applicationRun = gameObject.AddComponent<ElementaryMenuState>();
-        gameProcess = gameObject.AddComponent<GameProcessState>();
-        pauseGame = gameObject.AddComponent<PauseGameState>();
-        playerDie = gameObject.AddComponent<PlayerDieState>();
-        coinFinish = gameObject.AddComponent<CoinNotExistsState>();
-        gameEndState = gameObject.AddComponent<GameEndState>();
+        applicationRun = GetComponent<ElementaryMenuState>();
+        gameProcess = GetComponent<GameProcessState>();
+        pauseGame = GetComponent<PauseGameState>();
+        playerDie = GetComponent<PlayerDieState>();
+        coinFinish = GetComponent<CoinNotExistsState>();
+        gameEndState = GetComponent<GameEndState>();
 
         State = applicationRun;
         CreateElementaryMenu();

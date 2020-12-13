@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
     private delegate void WalkMethodSignature(float axis); 
 
     public float Speed { get; } = 8.0f;
-    public float Shift { get; } = 3.0f;
-    public float JumpForce { get; } = 240.0f;
+    public float Shift { get; } = 15.0f;
+    public float JumpForce { get; } = 280.0f;
     public GameStateMachine GameStateMachine => game;
     public int CoinAmount { get; set; }
 
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
     private void Execute(System.Action method)
     {
-        if (!IsGameOut())
+        if (IsGameOut() == false)
         {
             method?.Invoke();
         }
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
 
     private void Execute(WalkMethodSignature method, float axis)
     {
-        if (! IsGameOut())
+        if (IsGameOut() == false)
         {
             method?.Invoke(axis);
         }
