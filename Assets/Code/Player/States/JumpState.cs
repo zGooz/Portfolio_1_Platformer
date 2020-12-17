@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class JumpState : PlayerState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
     private PlayerStateMachine machine;
     private Rigidbody2D body;
     private Player player;
@@ -49,18 +51,11 @@ public class JumpState : PlayerState
     private void Shift()
     {
         float axis = Input.GetAxisRaw("Horizontal");
-        AddForce(player.Shift, new Vector2(axis, 0));
+        templateMethods.AddForce(body, player.Shift, new Vector2(axis, 0));
     }
 
     private void Jump()
     {
-        AddForce(player.JumpForce, new Vector2(0, 1));
-    }
-
-    private void AddForce(float value, Vector2 vector)
-    {
-        float scaling = value * Time.deltaTime;
-        Vector2 force = vector * scaling;
-        body.AddForce(force, ForceMode2D.Impulse);
+        templateMethods.AddForce(body, player.JumpForce, new Vector2(0, 1));
     }
 }

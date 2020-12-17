@@ -1,9 +1,10 @@
 ﻿
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CoinNotExistsState : GameState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
     private GameStateMachine machine;
 
     private void Awake()
@@ -13,19 +14,11 @@ public class CoinNotExistsState : GameState
 
     public override void ReloadGame()
     {
-        string scene = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        templateMethods.Restart();
     }
 
     public override void ExitGame()
     {
-        machine.State = machine.GameEndState;
-
-        if (machine.HasMenu())
-        {
-            machine.DeleteMenu();
-        }
-
-        Application.Quit();
+        templateMethods.Quit(machine);
     }
 }

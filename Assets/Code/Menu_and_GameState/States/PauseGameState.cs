@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PauseGameState : GameState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
     private GameStateMachine machine;
 
     private void Awake()
@@ -12,14 +14,7 @@ public class PauseGameState : GameState
 
     public override void ExitGame()
     {
-        machine.State = machine.GameEndState;
-
-        if (machine.HasMenu())
-        {
-            machine.DeleteMenu();
-        }
-
-        Application.Quit();
+        templateMethods.Quit(machine);
     }
 
     public override void ResumeGame()

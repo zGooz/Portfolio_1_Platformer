@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ElementaryMenuState : GameState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
     private GameStateMachine machine;
 
     private void Awake()
@@ -22,13 +24,6 @@ public class ElementaryMenuState : GameState
 
     public override void ExitGame()
     {
-        machine.State = machine.GameEndState;
-
-        if (machine.HasMenu())
-        {
-            machine.DeleteMenu();
-        }
-
-        Application.Quit();
+        templateMethods.Quit(machine);
     }
 }

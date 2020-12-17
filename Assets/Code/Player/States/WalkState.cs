@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class WalkState : PlayerState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
     private PlayerStateMachine machine;
     private Rigidbody2D body;
     private Player player;
@@ -18,9 +20,7 @@ public class WalkState : PlayerState
 
     public override void Walking(float axis)
     {
-        float scaling = player.Speed * Time.deltaTime;
-        Vector2 force = new Vector2(axis, 0) * scaling;
-        body.AddForce(force, ForceMode2D.Impulse);
+        templateMethods.AddForce(body, player.Speed, new Vector2(axis, 0));
     }
 
     public override void Jumping()

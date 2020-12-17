@@ -1,11 +1,24 @@
 ﻿
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class PlayerDieState : GameState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
+    private GameStateMachine machine;
+
+    private void Awake()
+    {
+        machine = GetComponent<GameStateMachine>();
+    }
+
     public override void ReloadGame()
     {
-        string scene = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        templateMethods.Restart();
+    }
+
+    public override void ExitGame()
+    {
+        templateMethods.Quit(machine);
     }
 }

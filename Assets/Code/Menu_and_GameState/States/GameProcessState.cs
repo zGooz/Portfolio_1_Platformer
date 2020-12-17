@@ -1,8 +1,10 @@
 ﻿
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class GameProcessState : GameState
 {
+    [SerializeField]
+    private TemplateMethods templateMethods;
     private GameStateMachine machine;
 
     private void Awake()
@@ -22,7 +24,6 @@ public class GameProcessState : GameState
 
     public override void ReloadGame()
     {
-        string scene = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        templateMethods.Restart();
     }
 }
